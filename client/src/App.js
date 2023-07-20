@@ -1,6 +1,7 @@
 import './App.css';
 import { useState } from 'react';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
       antiguedad: antiguedad
     }).then(() => {
       console.log("Success");
+      getEmpleados();
     });
   }
 
@@ -30,6 +32,8 @@ function App() {
       console.log(empleadosList);
     });
   }
+
+
 
   return (
     <div className="App">
@@ -69,7 +73,7 @@ function App() {
       </div>
 
       <div className="lista">
-        <button className="" onClick={getEmpleados}>Consultar</button>
+        <button className="btn btn-success" onClick={getEmpleados}>Consultar</button>
 
         {
           empleadosList.map((empleado) => {
