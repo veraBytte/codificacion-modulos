@@ -18,7 +18,7 @@ function App() {
       cargo: cargo,
       antiguedad: antiguedad
     }).then(() => {
-      console.log("Success");
+      alert.log("Success");
     });
   }
 
@@ -55,7 +55,7 @@ function App() {
         }}
         type="number"></input></label>
 
-        <button className="btn-registrar" onClick={mostrarDatos}>Registrar</button>  
+        <button className="btn-registrar" onClick={add}>Registrar</button>  
       </div>  
     </div>
   );
