@@ -1,70 +1,56 @@
-# Getting Started with Create React App
+## Descripción
+El código proporcionado es una aplicación web de gestión de empleados. Utiliza React para crear un formulario y una tabla para agregar, editar, eliminar y consultar empleados. La aplicación se comunica con un servidor RESTful a través de Axios para realizar operaciones CRUD (Crear, Leer, Actualizar y Eliminar) en una base de datos.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Componentes principales
+### Funciones y estados
+***useState:*** Esta función del hook de React se utiliza para definir y manipular los estados en el componente funcional App. Los estados representan los valores actuales del nombre, edad, país, cargo, antigüedad, ID y si se está editando o no.
 
-## Available Scripts
+***axios***: Esta biblioteca se utiliza para realizar peticiones HTTP al servidor RESTful y se emplea para las operaciones CRUD.
 
-In the project directory, you can run:
+***Swal:*** Es una biblioteca que proporciona ventanas emergentes personalizables para mostrar mensajes al usuario.
 
-### `npm start`
+***withReactContent:*** Un método de Swal que permite mostrar contenido React dentro de las ventanas emergentes.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Métodos principales
+***add():*** Método para agregar un nuevo empleado enviando una solicitud POST al servidor RESTful. Luego, muestra una ventana emergente de notificación con el resultado de la operación.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+***update():*** Método para actualizar un empleado existente enviando una solicitud PUT al servidor RESTful. Luego, muestra una ventana emergente de notificación con el resultado de la operación.
 
-### `npm test`
+***deleteEmpleado(val):*** Método para eliminar un empleado existente enviando una solicitud DELETE al servidor RESTful. Muestra una ventana emergente para confirmar la acción y otra para notificar el resultado de la operación.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+***editarEmpleado(empleado):*** Método para habilitar el modo de edición y prellenar el formulario con los datos del empleado seleccionado.
 
-### `npm run build`
+***limpiarCampos():*** Método para limpiar los campos del formulario y desactivar el modo de edición.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+***getEmpleados():*** Método para obtener la lista de empleados desde el servidor RESTful enviando una solicitud GET.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Estructura de la interfaz de usuario
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Un formulario con campos para ingresar el nombre, edad, país, cargo y antigüedad del empleado.
 
-### `npm run eject`
+2. Un botón para registrar un nuevo empleado o actualizar uno existente, según el estado de edición.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+3. Una tabla que muestra la lista de empleados con sus respectivos datos y botones para editar o eliminar cada empleado.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. Un botón para consultar la lista de empleados en el servidor.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Cómo usar la aplicación
+1. Clona o descarga los archivos necesarios para la aplicación.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2. Asegúrate de tener instalada la versión de React y las dependencias necesarias (como axios, bootstrap, sweetalert2).
 
-## Learn More
+3. Ejecuta la aplicación usando npm start o el comando que uses para iniciar proyectos de React.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+4. En el navegador, verás la interfaz de usuario de la aplicación para gestionar empleados.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+5. Completa el formulario y haz clic en el botón "Registrar" para agregar un nuevo empleado. Si se desea editar un empleado existente, haz clic en el botón "Editar" correspondiente en la tabla.
 
-### Code Splitting
+6. Haz clic en el botón "Eliminar" para eliminar un empleado de la tabla.
+Utiliza el botón "Consultar" para obtener la lista actualizada de empleados desde el servidor.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+7. Utiliza el botón "Consultar" para obtener la lista actualizada de empleados desde el servidor.
 
-### Analyzing the Bundle Size
+## Notas adicionales
+1. Asegúrate de tener un servidor RESTful en http://localhost:3001 que acepte las peticiones para crear, actualizar, eliminar y obtener empleados.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+2. Antes de usar la aplicación en un entorno de producción, considera implementar medidas de seguridad adecuadas para proteger el

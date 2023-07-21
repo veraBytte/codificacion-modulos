@@ -1,3 +1,5 @@
+// Importación de estilos y librerías necesarias
+
 import './App.css';
 import { useState } from 'react';
 import axios from 'axios';
@@ -5,10 +7,12 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
+// Configuración de SweetAlert2 para mostrar notificaciones con React
 const noti = withReactContent(Swal)
 
 function App() {
 
+   // Declaración de estados para almacenar la información del formulario y la lista de empleados
   const [nombre, setNombre] = useState("");
   const [edad, setEdad] = useState(0);
   const [pais, setPais] = useState("");
@@ -19,6 +23,8 @@ function App() {
 
   const [empleadosList, setEmpleados] = useState([]);
 
+  
+  // Función para registrar un nuevo empleado
   const add = () => {
     axios.post('http://localhost:3001/create', {
       nombre: nombre,
@@ -28,16 +34,21 @@ function App() {
       antiguedad: antiguedad
     }).then(() => {
       console.log("Success");
+
+      // Obtener la lista actualizada de empleados después del registro exitoso
       getEmpleados();
+      // Limpiar los campos del formulario después del registro
       limpiarCampos();
 
+      // Mostrar notificación de éxito con SweetAlert2
       noti.fire({
         tittle: <strong>Registro exitoso</strong>,
         html: <p>El empleado <b>{nombre}</b> ha sido registrado correctamente</p>,
         icon: "success",
-        timer:3000
+        timer:3000 // La notificación se cerrará automáticamente después de 3 segundos
       });
     }).catch((err) => {
+      // Mostrar notificación de error con SweetAlert2
       noti.fire({
         icon: 'error',
         title: 'Oops...',
@@ -47,8 +58,10 @@ function App() {
     })
   }
 
+  // Función para actualizar un empleado
   const update = () => {
     axios.put('http://localhost:3001/update', {
+      // Se envía los datos del empleado a actualizar
       id: id,
       nombre: nombre,
       edad: edad,
@@ -56,8 +69,10 @@ function App() {
       cargo: cargo,
       antiguedad: antiguedad
     }).then(() => {
+      // Obtener la lista actualizada de empleados después de la actualización exitosa
       getEmpleados();
       limpiarCampos();
+      // Mostrar notificación de éxito con SweetAlert2
       noti.fire({
         tittle: <strong>Actualizacion Exitosa</strong>,
         html: <p>El empleado <b>{nombre}</b> fue actualizado correctamente</p>,
@@ -67,6 +82,7 @@ function App() {
     })
   }
 
+  //Función para eliminar un empleado
   const deleteEmpleado = (val) => {
 
     noti.fire({
@@ -79,7 +95,10 @@ function App() {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Si deseo eliminarlo'
     }).then((result) => {
+      // Si el usuario confirma la acción, se ejecuta la petición para eliminar el empleado
       if (result.isConfirmed) {
+
+        // Se envía el id del empleado a eliminar
         axios.delete(`http://localhost:3001/delete/${val.ID}`).then(() => {
           getEmpleados();
           limpiarCampos();
@@ -89,7 +108,7 @@ function App() {
             icon:'success',
             timer:3000
           });
-        }).catch((err) => {
+        }).catch((err) => { // Si ocurre un error al eliminar el empleado, se muestra una notificación de error
           noti.fire({
             icon: 'error',
             title: 'Oops...',
@@ -101,7 +120,9 @@ function App() {
     })
   }
 
-  const editarEmpleado = (empleado) => {
+  // Función para editar un empleado
+  const editarEmpleado = (empleado) => { // Se recibe el objeto del empleado a editar y se asigna a los estados
+    
     setEditar(true);
     setNombre(empleado.NAME);
     setEdad(empleado.EDAD);
@@ -111,7 +132,7 @@ function App() {
     setId(empleado.ID);
   }
 
-  function limpiarCampos() {
+  function limpiarCampos() { // Función para limpiar los campos del formulario
     setNombre("");
     setEdad(0);
     setPais("");
@@ -122,6 +143,7 @@ function App() {
     setEditar(false);
   }
 
+  // Función para obtener la lista de empleados
   const getEmpleados = () => {
     axios.get('http://localhost:3001/empleados').then((response) => {
       console.log(setEmpleados(response.data));
@@ -130,8 +152,10 @@ function App() {
   }
 
   return (
+    // Estructura del formulario y la tabla de empleados
     <div className="container">
 
+      {/* Formulario para registrar y actualizar empleados */}
       <div className="card text-center">
         <div className="card-header">
           Gestion Empleados
@@ -198,7 +222,7 @@ function App() {
         </div>
       </div>
 
-
+      {/* Tabla para mostrar la lista de empleados */}
       <table className="table table-striped table-hover">
         <thead>
           <tr>
@@ -249,8 +273,6 @@ function App() {
       </table>
 
       <button className="btn btn-success" onClick={getEmpleados}>Consultar</button>
-
-
     </div>
   );
 }
