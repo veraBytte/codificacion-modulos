@@ -2,6 +2,10 @@ import './App.css';
 import { useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+
+const noti = withReactContent(Swal)
 
 function App() {
 
@@ -26,6 +30,13 @@ function App() {
       console.log("Success");
       getEmpleados();
       limpiarCampos();
+
+      noti.fire({
+        tittle: <strong>Registro exitoso</strong>,
+        html: <p>El empleado <b>{nombre}</b> ha sido registrado correctamente</p>,
+        icon: "success",
+        timer:3000
+      });
     });
   }
 
@@ -40,7 +51,40 @@ function App() {
     }).then(() => {
       getEmpleados();
       limpiarCampos();
+      noti.fire({
+        tittle: <strong>Actualizacion Exitosa</strong>,
+        html: <p>El empleado <b>{nombre}</b> fue actualizado correctamente</p>,
+        icon: "success",
+        timer:3000
+      });
     });
+  }
+
+  const deleteEmpleado = (val) => {
+
+    noti.fire({
+      title: 'Estas seguro de realizar esta accion?',
+      // text: "No podras revertir esta accion",
+      html: <p>Deseas eliminar el empleado <b>{val.NAME}</b></p>,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si deseo eliminarlo'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.delete(`http://localhost:3001/delete/${val.ID}`).then(() => {
+          getEmpleados();
+          limpiarCampos();
+        });
+        
+        noti.fire(
+          'Eliminado!',
+          `El empleado ${val.NAME}}`,
+          'success'
+        )
+      }
+    })
   }
 
   const editarEmpleado = (empleado) => {
@@ -173,7 +217,11 @@ function App() {
                       }}
                       className="btn btn-warning">Editar</button>
 
-                    <button type="button" className="btn btn-danger">Eliminar</button>
+                    <button type="button"
+                      onClick={() => {
+                        deleteEmpleado(empleado);
+                      }}
+                    className="btn btn-danger">Eliminar</button>
                   </div>
                 </td>
               </tr>
