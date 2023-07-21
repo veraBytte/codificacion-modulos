@@ -47,5 +47,22 @@ app.get('/empleados', (req, res) => {
 });
 
 //  INFO Función de actualización de la base de datos con el metodo put
+app.put('/update', (req, res) => {
+    const id = req.body.id;
+    const nombre = req.body.nombre;
+    const edad = req.body.edad;
+    const pais = req.body.pais;
+    const cargo = req.body.cargo;
+    const antiguedad = req.body.antiguedad;
+    
+    db.query('UPDATE empleados SET name=?, edad=?, pais=?, cargo=?, antiguedad=? WHERE id=?',[nombre,edad,pais,cargo,antiguedad,id],
+    (err,result)=>{
+        if(err){
+            console.log(err)
+        }else{
+            res.send("Empleado Actualizado")
+        }
+    }) //Promesa de esos valores
+});
 
 app.listen(3001, () => console.log('Server running on port 3001'));
