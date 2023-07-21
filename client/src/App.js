@@ -10,6 +10,7 @@ function App() {
   const [pais,setPais] = useState("");
   const [cargo,setCargo] = useState("");
   const [antiguedad,setAntiguedad] = useState(0);
+  const [id,setId] = useState(0);
   const [editar,setEditar] = useState(false);
 
   const [empleadosList, setEmpleados] = useState([]);
@@ -27,14 +28,28 @@ function App() {
     });
   }
 
-  // const editarEmpleado = (empleado) => {
-  //   setEditar(true);
-  //   setNombre(empleado.nombre);
-  //   setEdad(empleado.edad);
-  //   setCargo(empleado.cargo);
-  //   setPais(empleado.pais);
-  //   setAntiguedad(empleado.antiguedad);
-  // }
+  const update = () => {
+    axios.put('http://localhost:3001/update', {
+      id: id,
+      nombre: nombre,
+      edad: edad,
+      pais: pais,
+      cargo: cargo,
+      antiguedad: antiguedad
+    }).then(() => {
+      getEmpleados();
+    });
+  }
+
+  const editarEmpleado = (empleado) => {
+    setEditar(true);
+    setNombre(empleado.NAME);
+    setEdad(empleado.EDAD);
+    setCargo(empleado.CARGO);
+    setPais(empleado.PAIS);
+    setAntiguedad(empleado.ANTIGUEDAD);
+    setId(empleado.ID);
+  }
 
   const getEmpleados = () => {
     axios.get('http://localhost:3001/empleados').then((response) => {
@@ -55,7 +70,7 @@ function App() {
 
           <div className="input-group mb-3">
             <span className="input-group-text" id="basic-addon1">Nombre</span>
-            <input type="text"
+            <input type="text" value={nombre}
               onChange = {(event) => {
                 setNombre(event.target.value);
               }}            
@@ -64,7 +79,7 @@ function App() {
 
           <div className="input-group mb-3">
             <span className="input-group-text" id="basic-addon1">Edad</span>
-            <input type="number"
+            <input type="number" value={edad}
               onChange = {(event) => {
                 setEdad(event.target.value);
               }}            
@@ -73,7 +88,7 @@ function App() {
 
           <div className="input-group mb-3">
             <span className="input-group-text" id="basic-addon1">Pais</span>
-            <input type="text"
+            <input type="text" value={pais}
               onChange = {(event) => {
                 setPais(event.target.value);
               }}        
@@ -82,7 +97,7 @@ function App() {
 
           <div className="input-group mb-3">
             <span className="input-group-text" id="basic-addon1">Cargo</span>
-            <input type="text"
+            <input type="text" value={cargo}
               onChange = {(event) => {
                 setCargo(event.target.value);
               }}        
@@ -91,7 +106,7 @@ function App() {
 
           <div className="input-group mb-3">
             <span className="input-group-text" id="basic-addon1">Antiguedad</span>
-            <input type="number"
+            <input type="number" value={antiguedad}
               onChange = {(event) => {
                 setAntiguedad(event.target.value);
               }}        
@@ -101,7 +116,14 @@ function App() {
         </div>
 
         <div className="card-footer text-body-secondary">
-          <button className="btn-registrar" onClick={add}>Registrar</button>  
+          {
+            editar?
+            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+              <button className="btn btn-warning m-2" onClick={update}>Actualizar</button>    
+              <button type="button" className="btn btn-danger m-2">Cancelar</button>
+            </div>
+            :<button className="btn btn-success" onClick={add}>Registrar</button>
+          }
         </div>
       </div>
 
@@ -132,7 +154,12 @@ function App() {
                       <td>{empleado.ANTIGUEDAD}</td>
                       <td>
                         <div className="btn-group" role="group" aria-label="Basic mixed styles example">
-                          <button type="button" className="btn btn-warning">Editar</button>
+                          <button type="button"
+                          onClick={() => {
+                            editarEmpleado(empleado);
+                          }}
+                          className="btn btn-warning">Editar</button>
+
                           <button type="button" className="btn btn-danger">Eliminar</button>
                         </div> 
                       </td>
