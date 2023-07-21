@@ -37,7 +37,14 @@ function App() {
         icon: "success",
         timer:3000
       });
-    });
+    }).catch((err) => {
+      noti.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Sucedio un error al eliminar el empleado',
+        footer: JSON.parse(JSON.stringify(err)).message === 'Network Error'?"Error de conexion":"Error desconocido"
+      })
+    })
   }
 
   const update = () => {
@@ -57,7 +64,7 @@ function App() {
         icon: "success",
         timer:3000
       });
-    });
+    })
   }
 
   const deleteEmpleado = (val) => {
@@ -76,13 +83,20 @@ function App() {
         axios.delete(`http://localhost:3001/delete/${val.ID}`).then(() => {
           getEmpleados();
           limpiarCampos();
+          noti.fire({
+            title:'Eliminado!',
+            text:`El empleado ${val.NAME}`,
+            icon:'success',
+            timer:3000
+          });
+        }).catch((err) => {
+          noti.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Sucedio un error al eliminar el empleado',
+            footer: JSON.parse(JSON.stringify(err)).message === 'Network Error'?"Error de conexion":"Error desconocido"
+          })
         });
-        
-        noti.fire(
-          'Eliminado!',
-          `El empleado ${val.NAME}}`,
-          'success'
-        )
       }
     })
   }
